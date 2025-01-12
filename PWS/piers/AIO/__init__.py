@@ -1,3 +1,6 @@
+import asyncio
+from piers import debug, trace
+
 """
 asynchronous I/O related function or base classes.
 
@@ -10,8 +13,7 @@ async def sig_handler() :
 add(sig_handler)
 play()
 """
-import asyncio
-from piers import debug, trace
+
 
 def getLoop() :
 	"""
