@@ -152,11 +152,11 @@ class Cache () :
 		self.List = []
 		self.Size = size
 
-	async def create(self, name) :
+	async def create (self, name) :
 		return None
 
-	async def get (self, name) :
-		if name not in self.DB :
+	async def get (self, name, reload=False) :
+		if name not in self.DB or reload:
 			self.set(name, await self.create(name))
 		assert name in self.DB, "CACHE ERROR"
 		return self.DB[name]

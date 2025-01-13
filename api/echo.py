@@ -14,5 +14,5 @@ class H (WebHome.PostHandler) :
 		# s, dbn=[], rio.path.group(2)
 		ct, arg, hdrs=rio.Req
 		self.COUNT+=1;
-		return rio.JSON({"R":"OK","A":arg,"C":self.COUNT})
+		return rio.JSON({"R":"OK","A":arg,"C":self.COUNT,"V":0.1})
 PHMClass=H

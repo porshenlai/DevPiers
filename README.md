@@ -1,6 +1,6 @@
 # DevPiers
 ## Usage :
 ```
-bin/adm.ps1 play
-bin/adm.ps1 stop
+cd PWS
+./play.sh start
 ```

@@ -15,13 +15,30 @@ class PWS (WebHome) :
 	def __init__ (
 		self,
 		host = "0.0.0.0:40780",
-		home = {"GET":"./GET","POST":"./POST","PUT":"./PUT"},
-		pages = {"INDEX":"index.html","ERROR":"error.html"},
-		options = { "BUFSIZE":1048576, "MAXREQ":32, "MAXREQSIZE":8388608 },
-		cors = { "Access-Control-Allow-Origin":"*", "Access-Control-Allow-Headers":"*" },
+		home = {
+			"GET":"./GET",
+			"POST":"./POST",
+			"PUT":"./PUT"
+		},
+		pages = {
+			"INDEX":"index.html",
+			"ERROR":"error.html"
+		},
+		options = {
+			"BUFSIZE":1048576,
+			"MAXREQ":32,
+			"MAXREQSIZE":8388608,
+			"NO_API_CACHE":False
+		},
+		cors = {
+			"Access-Control-Allow-Origin":"*",
+			"Access-Control-Allow-Headers":"*"
+		},
 		cafiles = None
 	) :
 		super().__init__( host, home, pages, options, cors, cafiles )
+		if options["NO_API_CACHE"] :
+			print("API cache disabled.")
 
 async def main() :
 	cfg = {
@@ -39,7 +56,8 @@ async def main() :
 		"options": {
 			"BUFSIZE": 1048576,
 			"MAXREQ": 32,
-			"MAXREQSIZE": 8388608
+			"MAXREQSIZE": 8388608,
+			"NO_API_CACHE": False
 		},
 		"cors": {
 			"Access-Control-Allow-Origin": "*",
@@ -55,7 +73,7 @@ async def main() :
 				cfg["home"][k] = Path.join(ROOT, *[ v for v in cfg["home"][k].split("/") if v ])
 
 	makedirs(Path.dirname(cfg["pidfile"]), exist_ok=True)
-	print(json_stringify(cfg,ensure_ascii=False,indent=4))
+	# print(json_stringify(cfg,ensure_ascii=False,indent=4))
 
 	if "pidfile" in cfg and cfg["pidfile"] :
 		try :
@@ -75,6 +93,7 @@ async def main() :
 		cors = cfg["cors"],
 		cafiles = (cfg["cert"], cfg["key"]) if "cert" in cfg and cfg["cert"] and "key" in cfg and cfg["key"] else None
 	)
+	print(f"Listen on : {cfg['port']}")
 
 	signal(SIGINT, lambda sig,frame : ws.stop())
 	await ws.play()

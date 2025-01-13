@@ -351,7 +351,12 @@ class WebHome (Server) : ## {{{
 
 	def __init__ (
 		self, addr, home, pages,
-		options = { "BUFSIZE":1048576, "MAXREQ":32, "MAXREQSIZE":8388608 },
+		options = {
+			"BUFSIZE":1048576,
+			"MAXREQ":32,
+			"MAXREQSIZE":8388608,
+			"NO_API_CACHE":False
+		},
 		cors = None,
 		cafiles = None
 	) :
@@ -388,7 +393,7 @@ class WebHome (Server) : ## {{{
 			phm = await self.PHMCache.get(Path.join(
 				self.Home["POST"],
 				searchRE("[^/\\\\].*",rio.path).group(0)
-			))
+			),reload=self.Options["NO_CACHE_RELOAD"])
 			return await phm.handle(rio)
 		except Exception as x :
 			print(x)
