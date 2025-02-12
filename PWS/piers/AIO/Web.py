@@ -136,8 +136,8 @@ class Server : ## {{{
 		cors = { "Access-Control-Allow-Origin":"*", "Access-Control-Allow-Headers":"*" },
 		cafiles = None
 	)
-	await s.play();
-	s.stop();
+	await s.play()
+	s.stop()
 	"""
 
 	def __init__ (
@@ -227,9 +227,9 @@ class Server : ## {{{
 				host = host[1:len(host)-1]
 			self.P = web.TCPSite(runner, host, self.Port, ssl_context=self.SSLCtx) if self.SSLCtx else web.TCPSite(runner, host, self.Port)
 			await self.P.start()
-			self._log_("Ready", 9);
+			self._log_("Ready", 9)
 		except Exception as e :
-			print("Exception", e);
+			print("Exception", e)
 			await self.__aexit__(None, None, None)
 
 	async def __aexit__ (self, type, value, traceback) :
@@ -240,10 +240,10 @@ class Server : ## {{{
 	async def play (self) :
 		async with self :
 			self.Playing=addTask()
-			await self.Playing;
+			await self.Playing
 
 	def stop (self) :
-		self.Playing.set_result(True);
+		self.Playing.set_result(True)
 		self.Playing=None
 ## }}}
 
@@ -262,8 +262,8 @@ class WebService (Server) : ## {{{
 		super().__init__( addr, options=options, cors=cors, cafiles=cafiles )
 		self.Home = home
 		self.APIs = {"GET":set(),"POST":set(),"PUT":set()}
-		self.URLPrefixes = {};
-		self.Modules = {};
+		self.URLPrefixes = {}
+		self.Modules = {}
 
 	async def __aexit__( self, type, value, traceback ) :
 		await super().__aexit__( type, value, traceback )
@@ -276,7 +276,7 @@ class WebService (Server) : ## {{{
 			key = method+":"+prefix
 			if key in self.URLPrefixes :
 				self.APIs[method].remove(self.URLPrefixes[key])
-			r = self.URLPrefixes[key] = (createRE(prefix), handler);
+			r = self.URLPrefixes[key] = (createRE(prefix), handler)
 		self.APIs[method].add(r)
 
 	def reg_module( self, mod, args={}, prefix="" ) :
@@ -284,11 +284,11 @@ class WebService (Server) : ## {{{
 			def __init__( self, inst ) :
 				self.WS = inst
 			async def GET( self, rio ) :
-				return await getattr(self.WS, "GET_"+rio.path.group(1))( rio );
+				return await getattr(self.WS, "GET_"+rio.path.group(1))( rio )
 			async def POST( self, rio ) :
-				return await getattr(self.WS, "POST_"+rio.path.group(1))( rio );
+				return await getattr(self.WS, "POST_"+rio.path.group(1))( rio )
 			async def PUT( self, rio ) :
-				return await getattr(self.WS, "PUT_"+rio.path.group(1))( rio );
+				return await getattr(self.WS, "PUT_"+rio.path.group(1))( rio )
 		s,m = mod.WebService(**args), {}
 		if hasattr(mod.WebService,"Name") and hasattr(s,"__release__") :
 			self.Modules[mod.WebService.Name] = s
@@ -302,7 +302,7 @@ class WebService (Server) : ## {{{
 		mh = MH( s )
 		for k in m :
 			self.reg( prefix+"/([^/]*)/?(.*)", getattr(mh,k), method=k )
-		return s;
+		return s
 
 	def __find_api__( self, apis, rio ) :
 		for (t,h) in apis :
@@ -365,7 +365,7 @@ class WebHome (Server) : ## {{{
 		self.Pages = pages
 		class PHMC(Cache) :
 			async def create(self, name) :
-				G={"PHMClass":None,"Pref":{}}
+				G={"PHMClass":None,"Pref":{"Root":Path.dirname(name)}}
 				async with async_open( name+".py", "r" ) as fo :
 					exec(await fo.read(), G)
 				assert G["PHMClass"], "No such module"
@@ -374,7 +374,7 @@ class WebHome (Server) : ## {{{
 						G["Pref"] = parse_json(await fo.read())
 				except : pass
 				return G["PHMClass"](G["Pref"])
-		self.PHMCache = PHMC(32);
+		self.PHMCache = PHMC(32)
 
 	async def _handle_GET_ (self, rio) :
 		try :
@@ -393,9 +393,9 @@ class WebHome (Server) : ## {{{
 			phm = await self.PHMCache.get(Path.join(
 				self.Home["POST"],
 				searchRE("[^/\\\\].*",rio.path).group(0)
-			),reload=self.Options["NO_CACHE_RELOAD"])
+			),reload=self.Options["NO_API_CACHE"])
 			return await phm.handle(rio)
 		except Exception as x :
-			print(x)
+			print("Exception:",x)
 			return rio.JSON({"E": "NO SUCH HANDLER"})
 ## }}}

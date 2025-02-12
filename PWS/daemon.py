@@ -3,6 +3,8 @@ from os import listdir, makedirs, path as Path
 from re import compile as newRE
 from json import loads as json_parse, load as json_read, dumps as json_stringify
 from signal import signal, SIGINT
+from hashlib import sha256
+from base64 import b64encode
 
 ROOT = Path.dirname(__file__)
 PROT = Path.dirname(ROOT)
@@ -39,6 +41,22 @@ class PWS (WebHome) :
 		super().__init__( host, home, pages, options, cors, cafiles )
 		if options["NO_API_CACHE"] :
 			print("API cache disabled.")
+		self.MasterKey = options["MASTER_KEY"]
+
+	def sha (self,v) :
+		s = sha256()
+		s.update(v.encode('utf8'))
+		return b64encode(s.digest()).decode('ascii')
+
+	async def _authenticate_ (self, rs) :
+		if "Piers-Session" in rs.request.headers :
+			sk = rs.request.headers["Piers-Session"]
+			sk = sk.split(":")
+			skey = self.sha(":".join(sk[0:2]+[self.MasterKey]))
+			if sk[3] != self.sha(":".join(sk[0:2]+[skey,sk[2]])) :
+				return rs.JSON({"R":"Failed","A":"UNAUTHORIZED"})
+			rs.Session["User"]=sk[0]
+		return None
 
 async def main() :
 	cfg = {
