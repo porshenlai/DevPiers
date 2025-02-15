@@ -32,7 +32,7 @@ document.currentScript.value=async (root,args)=>{
 							return alert("確認密碼錯誤");
 						res = await APP.Head.request("home/auth",{
 							"A":"porshenlai",
-							"S":Piers.Session.SHA_b64(newpass)
+							"S":Piers.Session.SHA_b64("porshenlai:"+newpass)
 						});
 						alert(res.R==="OK" ? "密碼修改成功" : "密碼修改失敗");
 						e.setAttribute("Fold","y");
@@ -49,7 +49,7 @@ document.currentScript.value=async (root,args)=>{
 						return r;
 					},"[vn]",{}), msg,res;
 
-					form.S = Piers.Session.SHA_b64(form.S);
+					form.S = Piers.Session.SHA_b64(form.A+":"+form.S);
 					res = await APP.Head.request("home/auth",{"A":form.A});
 					if (res.R === "OK") {
 						form.T = res.A.T;
