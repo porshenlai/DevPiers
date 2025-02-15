@@ -30,7 +30,8 @@ class PWS (WebHome) :
 			"BUFSIZE":1048576,
 			"MAXREQ":32,
 			"MAXREQSIZE":8388608,
-			"NO_API_CACHE":False
+			"NO_API_CACHE":False,
+			"MASTER_KEY":"Cyberpiers.COM"
 		},
 		cors = {
 			"Access-Control-Allow-Origin":"*",

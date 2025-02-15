@@ -12,6 +12,7 @@
 		"BUFSIZE":1048576,
 		"MAXREQ":32,
 		"MAXREQSIZE":8388608,
-		"NO_API_CACHE":true
+		"NO_API_CACHE":true,
+		"MASTER_KEY":"Cyberpiers&Chihlee"
 	}
 }
