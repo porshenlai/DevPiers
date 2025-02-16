@@ -9,6 +9,7 @@ from os import path as Path
 from re import compile as createRE, fullmatch as matchRE, search as searchRE
 from json import loads as parse_json
 import ssl
+import traceback
 
 from piers.Data import JObj, Cache
 from piers.AIO import add as addTask
@@ -84,10 +85,10 @@ class RIO: ## {{{
 				async for buf in self.read() :
 					await fo.write(buf)
 		elif "Text" == self.ReqType :
-			async with async_open(path, "w") as fo :
+			async with async_open(path, "w", encoding="utf8") as fo :
 				await fo.write(self.ReqBody)
 		elif "JSON" == self.ReqType :
-			async with async_open(path, "w") as fo :
+			async with async_open(path, "w", encoding="utf8") as fo :
 				await fo.write(JObj(self.ReqBody).stringify())
 
 	def addHeader (self, name, value) :
@@ -229,7 +230,7 @@ class Server : ## {{{
 			await self.P.start()
 			self._log_("Ready", 9)
 		except Exception as e :
-			print("Exception", e)
+			print("Exception 232", e)
 			await self.__aexit__(None, None, None)
 
 	async def __aexit__ (self, type, value, traceback) :
@@ -366,7 +367,7 @@ class WebHome (Server) : ## {{{
 		class PHMC(Cache) :
 			async def create(self, name) :
 				G={"PHMClass":None,"Pref":{"Root":Path.dirname(name)}}
-				async with async_open( name+".py", "r" ) as fo :
+				async with async_open( name+".py", "r", encoding="utf8" ) as fo :
 					exec(await fo.read(), G)
 				assert G["PHMClass"], "No such module"
 				try :
@@ -396,6 +397,7 @@ class WebHome (Server) : ## {{{
 			),reload=self.Options["NO_API_CACHE"])
 			return await phm.handle(rio)
 		except Exception as x :
-			print("Exception:",x)
+			# print("Exception 399:",x)
+			print(traceback.format_exc())
 			return rio.JSON({"E": "NO SUCH HANDLER"})
 ## }}}

@@ -22,7 +22,7 @@ class H (WebHome.PostHandler) :
 			if self.UserTable :
 				return self.UserTable[uid] if uid in self.UserTable else None
 			try :
-				async with async_open(Path.join(self.Root,"users.json"),"r") as fo :
+				async with async_open(Path.join(self.Root,"users.json"),"r",encoding="utf8") as fo :
 					self.UserTable=readJSON(await fo.read())
 			except :
 				break
@@ -64,7 +64,7 @@ class H (WebHome.PostHandler) :
 						return rio.JSON({"R":"FAIL","A":"NOT LOGIN"})
 					await self.querySecret(arg["A"])
 					self.UserTable[arg["A"]] = arg["S"]
-					async with async_open(Path.join(self.Root,"users.json"),"w") as fo :
+					async with async_open(Path.join(self.Root,"users.json"),"w",encoding="utf8") as fo :
 						await fo.write(writeJSON(self.UserTable,ensure_ascii=False))
 					return rio.JSON({"R":"OK","A":[arg["A"],arg["S"]]})
 			else :

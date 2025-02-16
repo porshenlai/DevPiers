@@ -7,8 +7,7 @@ from hashlib import sha256
 from base64 import b64encode
 
 ROOT = Path.dirname(__file__)
-PROT = Path.dirname(ROOT)
-if PROT not in libPath : libPath.insert(0,PROT)
+if ROOT not in libPath : libPath.insert(0,ROOT)
 
 from piers import AIO
 from piers.AIO.Web import WebHome, httpPOST, httpPUT
@@ -102,7 +101,7 @@ async def main() :
 				print("PID is %s" % getpid);
 				fo.write( getpid )
 		except Exception as x :
-			print("Exception: ",x)
+			print("Exception from daemon: ",x)
 
 	ws = PWS(
 		host = "%s:%d" % (cfg["host"],cfg["port"]),
