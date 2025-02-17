@@ -9,12 +9,12 @@ if (-Not (Test-Path "./python.exe" -PathType Leaf)) {
 	if (-Not (Test-Path __install__.zip -PathType Leaf)) {
 		Invoke-RestMethod -Uri $PY3PKG -OutFile __python__.zip
 	}
-	Expand-Archive -Path __python__.zip -DestinationPath .
+	Expand-Archive -Path __python__.zip -DestinationPath __pyenv__
 	Remove-Item __python__.zip
 
-	if (-Not (Test-Path "Lib/site-package/pip" -PathType Container)) {
+	if (-Not (Test-Path "__pyenv__/Lib/site-package/pip" -PathType Container)) {
 		Invoke-RestMethod -Uri $PIPPKG -OutFile __pip__.py
-		.\python.exe __pip__.py
+		__pyenv__\python.exe __pip__.py
 		Remove-Item __pip__.py
 
 		@"
@@ -29,13 +29,11 @@ for fn in argv[1:] :
             o.append(l)
     with open(fn,"w") as fo :
         fo.write("\n".join(o))
-"@ | .\python.exe - python312._pth
+"@ | __pyenv__\python.exe - __pyenv__\python312._pth
 	}
 
-	.\python.exe -m pip install --upgrade pip
+	__pyenv__\python.exe -m pip install --upgrade pip
 	if (Test-Path requirements.txt) {
-		.\python.exe -m pip install -r requirements.txt
+		__pyenv__\python.exe -m pip install -r requirements.txt
 	}
 }
-
-Write-Host ${ROOT}+"\python.exe"
