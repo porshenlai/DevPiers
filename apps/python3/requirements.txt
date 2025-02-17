@@ -1,5 +1,0 @@
-aiohttp
-aiofiles
-aio-request
-pycryptodome
-
