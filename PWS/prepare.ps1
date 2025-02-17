@@ -17,7 +17,8 @@ if (-Not (Test-Path "./python.exe" -PathType Leaf)) {
 		.\python.exe __pip__.py
 		Remove-Item __pip__.py
 
-		@"from sys import argv
+		@"
+from sys import argv
 for fn in argv[1:] :
     o=[]
     with open(fn,"r") as fo :
