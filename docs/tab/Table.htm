@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+</head>
+<body>
+	<div>
+		<style>
+			[UIE="Input"] { margin: 8px; padding: 6px; border: 2px solid silver; }
+			[UIE="Input"]>div { display:flex; flex-flow:row nowrap; }
+			[UIE="Input"] input { border: 0 solid silver; border-width: 0 0 2px 0;}
+		</style>
+		<div>Table Sample</div>
+		<div UIE="Input">
+			<div>Name:<input type="text" style="flex:1 1 auto;"/></div>
+			<div>
+				<select UIE="CurPicker"></select>
+				<input type="number" min="0" step="0.01" style="flex:1 1 auto;"/>
+			</div>
+			<div>
+				<select><option>TWD</option></select>
+				<input UID="RefPrice" type="number" style="flex:1 1 auto;" readonly/>
+			</div>
+		</div>
+		<div UIE="List">
+			<table border="1" width="95%" align="center">
+				<thead><tr WidgetTag="cn">
+					<th>Name</th>
+					<th>Origin</th>
+					<th cn="R:text"></td>
+				</tr></thead>
+				<tbody WidgetTag="item"><tr>
+					<td item="N:text"></td>
+					<td item="O:text"></td>
+					<td item="R:text"></td>
+				</tr></tbody>
+				<tbody><tr WidgetTag="tt">
+					<td>Total</td>
+					<td tt="O:text"></td>
+					<td tt="R:text"></td>
+				</tr></tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

@@ -92,9 +92,9 @@
 			})(root.select('[WidgetTag="TBar"]'));
 
 			app.Bar.load([
-				{"L":"ChartSample","A":"ChartSample"},
+				{"L":"Table","A":"Table"},
 				{"L":"Regression","A":"Regression"},
-				{"L":"Page-C","A":"Page-C"}
+				{"L":"ChartSample","A":"ChartSample"}
 			]);
 
 			app.Tab=((R)=>{
@@ -106,7 +106,7 @@
 					}
 				};
 			})(root.select('[WidgetTag="PsTab"]'));
-			document.body.querySelector('[func="'+(Piers.Env.Args.O.SP||"ChartSample")+'"]').click();
+			document.body.querySelector('[func="'+(Piers.Env.Args.O.SP||"Table")+'"]').click();
 			document.body.style.opacity=1;
 		};
 		return app;
@@ -220,9 +220,9 @@
 		<div class="V">
 			<div WidgetTag="PsTab" style="position:absolute;width:100%;height:100%;left;0;top:0;">
 				<div PsTab="Login" _PsTab="tab/Login"></div>
-				<div PsTab="ChartSample" _PsTab="tab/ChartSample"></div>
+				<div PsTab="Table" _PsTab="tab/Table"></div>
 				<div PsTab="Regression" _PsTab="tab/Regression"></div>
-				<div PsTab="Page-C" _PsTab="tab/Page-C"></div>
+				<div PsTab="ChartSample" _PsTab="tab/ChartSample"></div>
 			</div>
 		</div>
 	</div>
