@@ -1,9 +1,13 @@
 document.currentScript.value=async (root,args)=>{
 	console.log("Table: ",root,args);
 
-	function gw(e,WN="Form"){
+	function gw (e,WN="Form"){
 		if("string"===typeof(e)) e=root.querySelector(e);
 		return e._gw ? e._gw() : new Piers.Widget[WN](e);
+	}
+
+	function o2a(o) {
+		return Object.keys(o).reduce((r,v)=>r.push({"K":v,"V":o[v]})&&r,[]);
 	}
 
 	class Book {
@@ -14,6 +18,7 @@ document.currentScript.value=async (root,args)=>{
 				"JPY":0.25,
 				"TWD":1
 			};
+			gw('[WidgetTag="cp"]',"List").set(o2a(this.xrate));
 			this.doc={
 				"CN":{"R":"TWD"},
 				"L":[
@@ -48,20 +53,39 @@ document.currentScript.value=async (root,args)=>{
 		}
 		redraw () {
 			this.recalc();
+			function oc(o){
+				let no=[],t;
+				for(t in o) no.push({"T":t,"A":o[t]});
+				return no;
+			}
 			gw('[UIE="List"] [WidgetTag="cn"]').set(this.doc.CN);
 			
 			gw('[UIE="List"] [WidgetTag="item"]',"List").set(this.doc.L.reduce(function(r,v){
-				r.push({"N":v.N, "O":JSON.stringify(v.O), "R":v.R});
+				r.push({"N":v.N, "O":oc(v.O), "R":v.R});
+				console.log(r);
 				return r;
 			},[]));
-			gw('[UIE="List"] [WidgetTag="tt"]').set((function(v){
-				let n=JSON.parse(JSON.stringify(v));
-				n.O = JSON.stringify(v.O);
-				return n;
-			})(this.doc.TT));
+			gw('[UIE="List"] [WidgetTag="tt"]').set({"O":oc(this.doc.TT.O),"R":this.doc.TT.R});
 		}
 	}
 
 	let B=new Book();
 	B.redraw();
+
+	(function(e){
+		if(e.CLICK_BIND)
+			e.removeEventListener("click",e.CLICK_BIND);
+		e.addEventListener("click",e.CLICK_BIND=function(evt){
+			try {
+				let btn=Piers.DOM(evt.target).find('[func]');
+				if (!btn) return;
+				switch(btn.getAttribute("func")){
+				case "TEST":
+					console.log(gw(e).get());
+					break;
+				};
+			} catch(x) {
+			}
+		});
+	})(root.querySelector('[WidgetTag="IPT"]'));
 };
