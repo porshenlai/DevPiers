@@ -18,7 +18,7 @@ document.currentScript.value=async (root,args)=>{
 				"JPY":0.25,
 				"TWD":1
 			};
-			gw('[WidgetTag="cp"]',"List").set(o2a(this.xrate));
+			gw('[WidgetTag="IPT"]').set({"O":{"_T_":o2a(this.xrate)}});
 			this.doc={
 				"CN":{"R":"TWD"},
 				"L":[
