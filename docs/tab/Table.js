@@ -18,7 +18,11 @@ document.currentScript.value=async (root,args)=>{
 				"JPY":0.25,
 				"TWD":1
 			};
-			gw('[WidgetTag="IPT"]').set({"O":{"_T_":o2a(this.xrate)}});
+			((e)=>{
+				while (e.firstChild) e.removeChild(e.firstChild);
+				for (let k in this.xrate)
+					Piers.DOM({ "T":"option", "A":{"value":k}, "C":[k] }).join(e);
+			})(root.querySelector('[IPT="O.T:Value"]'));
 			this.doc={
 				"CN":{"R":"TWD"},
 				"L":[
@@ -51,6 +55,18 @@ document.currentScript.value=async (root,args)=>{
 			this.doc.TT.O=tto;
 			this.doc.TT.R=this.mdConv(tto);
 		}
+		addRecord (r) {
+			if (undefined!==r.I){
+				let idx=r.I;
+				delete r.I;
+				this.doc.L[idx]=r;
+			}else this.doc.L.push(r);
+			this.redraw();
+		}
+		removeRecord (idx) {
+			this.doc.L.splice(idx,1);
+			this.redraw();
+		}
 		redraw () {
 			this.recalc();
 			function oc(o){
@@ -62,7 +78,6 @@ document.currentScript.value=async (root,args)=>{
 			
 			gw('[UIE="List"] [WidgetTag="item"]',"List").set(this.doc.L.reduce(function(r,v){
 				r.push({"N":v.N, "O":oc(v.O), "R":v.R});
-				console.log(r);
 				return r;
 			},[]));
 			gw('[UIE="List"] [WidgetTag="tt"]').set({"O":oc(this.doc.TT.O),"R":this.doc.TT.R});
@@ -80,12 +95,59 @@ document.currentScript.value=async (root,args)=>{
 				let btn=Piers.DOM(evt.target).find('[func]');
 				if (!btn) return;
 				switch(btn.getAttribute("func")){
-				case "TEST":
-					console.log(gw(e).get());
+				case "Add":
+					(function (doc) {
+						doc.O = [doc.O].reduce((r,v)=>{
+							r[v.T] = parseFloat(v.A);
+							return r;
+						},{});
+						if (null===doc.I) delete doc.I;
+						B.addRecord(JSON.parse(JSON.stringify(doc)));
+					})(gw(e).get());
+					break;
+				case "Clear":
+					(function (ie) {
+						if (!ie) return;
+						ie.removeAttribute("__idx__");
+					})(Piers.DOM(btn).find('[__idx__]'));
+					break;
+				case "Remove":
+					(function (ie) {
+						if (!ie) return;
+						if (window.confirm("Remove item ? ")) {
+							ie.removeAttribute("__idx__");
+							B.removeRecord(ie);
+						}
+					})(Piers.DOM(btn).find('[__idx__]'));
 					break;
 				};
 			} catch(x) {
 			}
 		});
 	})(root.querySelector('[WidgetTag="IPT"]'));
+
+	(function(e){
+		if(e.CLICK_BIND)
+			e.removeEventListener("click",e.CLICK_BIND);
+		e.addEventListener("click",e.CLICK_BIND=function(evt){
+			try {
+				let btn=Piers.DOM(evt.target).find('[func]');
+				if (!btn) return;
+				switch(btn.getAttribute("func")){
+				case "Select":
+					(function (e) {
+						// TODO the input UI only support one record with one dollar type now.
+						let doc = gw(e).get();
+						gw('[WidgetTag="IPT"]').set({
+							"N":doc.N,
+							"O":doc.O[0],
+							"I":e.getAttribute("__idx__")
+						});
+					})(btn);
+					break;
+				};
+			} catch(x) {
+			}
+		});
+	})(root.querySelector('[UIE="List"]'));
 };
