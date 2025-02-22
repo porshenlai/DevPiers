@@ -17,6 +17,9 @@ class H (WebHome.PostHandler) :
 		self.Root=args["Root"]
 		self.UserTable=None
 
+	def __del__ (self) :
+		pass
+
 	async def querySecret (self, uid) :
 		while True :
 			if self.UserTable :

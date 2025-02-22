@@ -383,6 +383,8 @@ class WebHome (Server) : ## {{{
 				c,t = await super().get(name, reload)
 				if not reload and t < Path.getmtime(name+".py") :
 					c,t = await super().get(name, True)
+				if not callable(getattr(c,"__del__",None)) :
+					del self.DB[name]
 				return c 
 		self.PHMCache = PHMC(32)
 
