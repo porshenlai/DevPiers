@@ -8,6 +8,7 @@ from mimetypes import guess_type
 from os import path as Path
 from re import compile as createRE, fullmatch as matchRE, search as searchRE
 from json import loads as parse_json
+from time import time
 import ssl
 import traceback
 
@@ -324,7 +325,7 @@ class WebService (Server) : ## {{{
 		if h :
 			r = h( rio )
 			return (await r) if asyncio.iscoroutine( r ) else r
-		p = Path.join(self.Root, rio.path[1:])
+		p = Path.abspath(Path.join(self.Root, rio.path[1:]))
 		if Path.isdir(p) :
 			p = Path.join(p, self.Index)
 		return await rio.File(p)
@@ -366,15 +367,25 @@ class WebHome (Server) : ## {{{
 		self.Pages = pages
 		class PHMC(Cache) :
 			async def create(self, name) :
-				G={"PHMClass":None,"Pref":{"Root":Path.dirname(name)}}
+				G = { "PHMClass":None }
 				async with async_open( name+".py", "r", encoding="utf8" ) as fo :
 					exec(await fo.read(), G)
 				assert G["PHMClass"], "No such module"
+				Arg = {"Root":Path.dirname(name)}
 				try :
 					async with async_open( name+".json", "r" ) as fo :
-						G["Pref"] = parse_json(await fo.read())
+						Arg.update(parse_json(await fo.read()))
 				except : pass
-				return G["PHMClass"](G["Pref"])
+				print("Reload module",name);
+				return (G["PHMClass"](Arg),time())
+
+			async def get(self, name, reload=False) :
+				c,t = await super().get(name, reload)
+				if not reload and t < Path.getmtime(name+".py") :
+					c,t = await super().get(name, True)
+				if not callable(getattr(c,"__del__",None)) :
+					del self.DB[name]
+				return c 
 		self.PHMCache = PHMC(32)
 
 	async def _handle_GET_ (self, rio) :
@@ -394,7 +405,7 @@ class WebHome (Server) : ## {{{
 			phm = await self.PHMCache.get(Path.join(
 				self.Home["POST"],
 				searchRE("[^/\\\\].*",rio.path).group(0)
-			),reload=self.Options["NO_API_CACHE"])
+			),reload="NO_API_CACHE" in self.Options and self.Options["NO_API_CACHE"])
 			return await phm.handle(rio)
 		except Exception as x :
 			# print("Exception 399:",x)

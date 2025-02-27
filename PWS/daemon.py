@@ -39,8 +39,6 @@ class PWS (WebHome) :
 		cafiles = None
 	) :
 		super().__init__( host, home, pages, options, cors, cafiles )
-		if options["NO_API_CACHE"] :
-			print("API cache disabled.")
 		self.MasterKey = options["MASTER_KEY"]
 
 	def sha (self,v) :
