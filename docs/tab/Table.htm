@@ -7,8 +7,8 @@
 <body>
 	<div>
 		<style>
-			[WidgetTag="IPT"] { margin: 8px; padding: 6px; border: 2px solid silver; }
-			[WidgetTag="IPT"]>div { display:flex; flex-flow:row nowrap; }
+			[WidgetTag="IPT"] { margin: 8px; padding: 6px; border: 2px solid silver; background:#f0f0ff; }
+			[WidgetTag="IPT"]>div { display:flex; flex-flow:row nowrap; margin:6px 0; }
 			[WidgetTag="IPT"] input { border: 0 solid silver; border-width: 0 0 2px 0;}
 			.NF, .UF { flex:1 1 auto; }
 			[__idx__] .NF, .UF { display:none; }
@@ -21,6 +21,14 @@
 				<select IPT="O.T:Value"></select>
 				<input type="number" min="0" step="0.01" style="flex:1 1 auto;" IPT="O.A:Value"/>
 			</div>
+			<div>
+				<select>
+						<option>Cash</option>
+						<option>Cash (from TWD)</option>
+						<option>Cash (from USD)</option>
+						<option>Credit Card</option>
+				</select>
+			</div>
 			<div IPT="I:Attribute:__idx__" style="text-align:center;">
 				<button class="NF" func="Add">Add</button>
 				<button class="UF" func="Add">Edit</button>
@@ -28,8 +36,9 @@
 				<button class="UF" func="Clear">Clear</button>
 			</div>
 		</div>
+		<hr/>
 		<div UIE="List">
-			<table border="1" cellspacing="6" cellpadding="6" width="98%" align="center">
+			<table border="1" cellspacing="6" cellpadding="6" width="100%" align="center" style="border:0">
 				<thead><tr WidgetTag="cn">
 					<th>Name</th>
 					<th>Origin</th>

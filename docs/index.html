@@ -91,12 +91,12 @@
 				};
 			})(root.select('[WidgetTag="TBar"]'));
 
-			app.Bar.load([
-				{"L":"Timeline","A":"Timeline"},
-				{"L":"Table","A":"Table"},
-				{"L":"Regression","A":"Regression"},
-				{"L":"ChartSample","A":"ChartSample"}
-			]);
+			app.Bar.load(Piers.DOM(document.body.querySelector('[WidgetTag="PsTab"]')).reduce(function(r,e){
+				return r.push({
+					"L":e.getAttribute("_PsTabLabel"),
+					"A":e.getAttribute("PsTab")
+				}) && r;
+			},'[_PsTabLabel]',[]));
 
 			app.Tab=((R)=>{
 				let T=new Piers.Widget.SlidingTabs(R, {Method:"horizontal"});
@@ -221,10 +221,11 @@
 		<div class="V">
 			<div WidgetTag="PsTab" style="position:absolute;width:100%;height:100%;left;0;top:0;">
 				<div PsTab="Login" _PsTab="tab/Login"></div>
-				<div PsTab="Timeline" _PsTab="tab/Timeline"></div>
-				<div PsTab="Table" _PsTab="tab/Table"></div>
-				<div PsTab="Regression" _PsTab="tab/Regression"></div>
-				<div PsTab="ChartSample" _PsTab="tab/ChartSample"></div>
+				<div PsTab="Timeline" _PsTab="tab/Timeline" _PsTabLabel="時間軸範例"></div>
+				<div PsTab="Table" _PsTab="tab/Table" _PsTabLabel="表格示範"></div>
+				<div PsTab="Regression" _PsTab="tab/Regression" _PsTabLabel="回歸示範"></div>
+				<div PsTab="SpeechSynthesis" _PsTab="tab/SpeechSynthesis" _PsTabLabel="語音合成示範"></div>
+				<div PsTab="ChartSample" _PsTab="tab/ChartSample" _PsTabLabel="繪圖示範"></div>
 			</div>
 		</div>
 	</div>
