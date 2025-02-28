@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+</head>
+<body>
+	<div>
+		<style>
+			[WidgetTag="IPT"] { margin: 8px; padding: 6px; border: 2px solid silver; }
+			[WidgetTag="IPT"]>div { display:flex; flex-flow:row nowrap; }
+			[WidgetTag="IPT"] input { border: 0 solid silver; border-width: 0 0 2px 0;}
+		</style>
+		<div>Table Sample</div>
+		<div WidgetTag="IPT">
+			<div>Name:<input type="text" style="flex:1 1 auto;" IPT="N:Value"/></div>
+			<div>
+				<select IPT="O.T:Value"></select>
+				<input type="number" min="0" step="0.01" style="flex:1 1 auto;" IPT="O.A:Value"/>
+			</div>
+			<div style="text-align:center;">
+				<button func="Play">&#9654;</button>
+				<button func="Stop">&#9632;</button>
+			</div>
+		</div>
+		<div UIE="List">
+			<table border="1" cellspacing="6" cellpadding="6" width="98%" align="center">
+				<thead><tr>
+					<th>Time</th>
+					<th>Saving</th>
+				</tr></thead>
+				<tbody WidgetTag="item"><tr>
+					<td item="T:text"></td>
+					<td item="V:text"></td>
+				</tr></tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
