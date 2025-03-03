@@ -2,6 +2,7 @@ document.currentScript.value=async (root,args)=>{
 	console.log("Table: ",root,args);
 
 	function gw (e,WN="Form"){
+		console.log("XXXXXXXXXXXXXXXXXXXXXXXXXX",e);
 		if("string"===typeof(e)) e=root.querySelector(e);
 		return e._gw ? e._gw() : new Piers.Widget[WN](e);
 	}
@@ -80,6 +81,7 @@ document.currentScript.value=async (root,args)=>{
 				for(t in o) no.push({"T":t,"A":o[t]});
 				return no;
 			}
+/*
 			gw('[UIE="List"] [WidgetTag="cn"]').set(this.doc.CN);
 			
 			gw('[UIE="List"] [WidgetTag="item"]',"List").set(this.doc.L.reduce(function(r,v){
@@ -87,6 +89,7 @@ document.currentScript.value=async (root,args)=>{
 				return r;
 			},[]));
 			gw('[UIE="List"] [WidgetTag="tt"]').set({"O":oc(this.doc.TT.O),"R":this.doc.TT.R});
+*/
 		}
 	}
 
