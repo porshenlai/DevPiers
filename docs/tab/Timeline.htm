@@ -15,6 +15,8 @@
 			[activeCAT="JOB"] [ForCAT="JOB"],
 			[activeCAT="DEBT"] [ForCAT="DEBT"],
 			[activeCAT="INVEST"] [ForCAT="INVEST"] { display:inline; }:
+
+			[ForTASK] { display:none}
 		</style>
 		<div>致理夢工廠</div>
 
@@ -28,27 +30,37 @@
 							<option value="INVEST">投資</option>
 						</select>
 						<select ForCAT="JOB">
-							<option>理專(高中)</option>
-							<option>分析師(大學)</option>
-							<option>Food Panda 送貨員</option>
+							<option value="JOB_H">理專(高中)</option>
+							<option value="JOB_U">分析師(大學)</option>
+							<option value="JOB_F">Food Panda 送貨員</option>
 						</select>
 						<select ForCAT="DEBT">
-							<option>信用貸款</option>
-							<option>貸款</option>
-							<option>分期付款</option>
+							<option value="DEBT_CREDIT">信用貸款</option>
+							<option value="DEBT_LOAN">貸款</option>
+							<option value="DEBT_DELAY">分期付款</option>
 						</select>
 						<select ForCAT="INVEST">
-							<option>股票</option>
-							<option>基金</option>
-							<option>樂透彩</option>
+							<option value="INVEST_STOCK">股票</option>
+							<option value="INVEST_FUND">基金</option>
+							<option value="INVEST_LOTTERY">樂透彩</option>
 						</select>
 					</div></td>
 				</tr><tr>
 					<td colspan="3" WidgetTag="IPT">
-						<div>Name:<input type="text" style="flex:1 1 auto;" IPT="N:Value"/></div>
-						<div>
-							<select IPT="O.T:Value"></select>
-							<input type="number" min="0" step="0.01" style="flex:1 1 auto;" IPT="O.A:Value"/>
+						<div ForTASK="JOB_H">
+							<h1>理專(高中)</h1>
+							<div>Name:<input type="text" style="flex:1 1 auto;" IPT="N:Value"/></div>
+							<div>
+								<select IPT="O.T:Value"></select>
+								<input type="number" min="0" step="0.01" style="flex:1 1 auto;" IPT="O.A:Value"/>
+							</div>
+						</div>
+						<div ForTASK="JOB_U">
+							<h1>分析師(大學)</h1>
+						</div>
+						<div ForTASK="JOB_F">
+							<h1>Food Panda 送貨員</h1>
+							<div>條件: 機車</div>
 						</div>
 					</td>
 				</tr></tbody>
