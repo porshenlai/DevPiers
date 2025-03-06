@@ -1,6 +1,15 @@
 document.currentScript.value=async (root,args)=>{
 	console.log("Table: ",root,args);
 
+	let Dict={
+		"TWD":"臺幣",
+		"JPY":"日圓",
+		"EUR":"歐元",
+		"USD":"美金",
+		"C_TWD":"信用卡(隔月台幣支付)",
+		"CP_TWD":"預購(臺幣信用卡預付)"
+	}
+
 	function gw (e,WN="Form"){
 		if("string"===typeof(e)) e=root.querySelector(e);
 		return e._gw ? e._gw() : new Piers.Widget[WN](e);
@@ -18,16 +27,30 @@ document.currentScript.value=async (root,args)=>{
 	class Book {
 		constructor () {
 			this.xrate={
-				"EUR":34,
-				"USD":32,
+				"TWD":1,
 				"JPY":0.25,
-				"TWD":1
+				"EUR":34,
+				"USD":33
+			};
+			this.budgets={
+				"TWD":100000,
+				"JPY":100000,
+				"EUR":10000,
+				"USD":10000,
+				"C_TWD":200000,
+				"CP_TWD":200000,
+				"BW":1000000
 			};
 			((e)=>{
 				while (e.firstChild) e.removeChild(e.firstChild);
 				for (let k in this.xrate)
-					Piers.DOM({ "T":"option", "A":{"value":k}, "C":[k] }).join(e);
+					Piers.DOM({ "T":"option", "A":{"value":k}, "C":[Dict[k]||k] }).join(e);
 			})(root.querySelector('[IPT="O.T:Value"]'));
+			((e)=>{
+				while (e.firstChild) e.removeChild(e.firstChild);
+				for (let k in this.budgets)
+					Piers.DOM({ "T":"option", "A":{"value":k}, "C":[Dict[k]||k] }).join(e);
+			})(root.querySelector('[IPT="M:Value"]'));
 			this.doc={
 				"CN":{"R":"TWD"},
 				"L":[
