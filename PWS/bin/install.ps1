@@ -3,7 +3,7 @@ $ROOT = Split-Path (Get-Variable MyInvocation).value.MyCommand.Path
 $PY3PKG = "https://www.python.org/ftp/python/3.12.4/python-3.12.4-embed-amd64.zip"
 $PIPPKG = "https://bootstrap.pypa.io/get-pip.py"
 
-cd ${ROOT}
+cd ${ROOT}/..
 if (-Not (Test-Path "__pyenv__/python.exe" -PathType Leaf)) {
 	# TODO PortableGit\bin\sh.exe install_PyEnv.sh Python
 	if (-Not (Test-Path __install__.zip -PathType Leaf)) {
@@ -37,5 +37,3 @@ for fn in argv[1:] :
 		__pyenv__\python.exe -m pip install -r requirements.txt
 	}
 }
-
-__pyenv__\python.exe daemon.py config.json

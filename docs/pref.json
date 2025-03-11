@@ -1,0 +1,8 @@
+{
+	"Pages":{
+		"Login":{"F":"tab/Login"},
+		"ChartSample":{"F":"tab/ChartSample","L":"Chart Sample"},
+		"Regression":{"F":"tab/Regression","L":"Regression Sample"}
+	},
+	"StartPage":"Timeline"
+}

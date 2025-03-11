@@ -1,25 +1,17 @@
 #!/bin/sh
-ROOT=$(realpath $0) && ROOT=${ROOT%/*}
+ROOT=$(realpath $0) && ROOT=${ROOT%/bin/*}
 DOCS=${ROOT}/docs
 PID=${ROOT}/PWS.pid
+
+python3="__pyenv__/bin/python3"
+test -f "__pyenv__/python.exe" && python3="__pyenv__/python.exe"
 
 while test "$1"; do
 case "$1" in
 start)
 	if test -f "${ROOT}/config.json"; then
 		cd ${ROOT}
-		if ! test -f __pyenv__/bin/activate; then
-			echo "Install python virtual environment"
-			PY3PKG="https://www.python.org/ftp/python/3.12.4/python-3.12.4-embed-amd64.zip"
-			PIPPKG="https://bootstrap.pypa.io/get-pip.py"
-			python3 -m venv __pyenv__
-			if test -f "${ROOT}/requirements.txt"; then
-				. __pyenv__/bin/activate
-				python3 -m pip install -r ${ROOT}/requirements.txt
-				deactivate
-			fi
-		fi
-		__pyenv__/bin/python3 ${ROOT}/daemon.py ${ROOT}/config.json &
+		${python3} ${ROOT}/daemon.py ${ROOT}/config.json &
 		for s in 1 2 3 4 5 6 7 8 9 10; do
 			if test -f "${PID}"; then
 				echo "Daemon running at " $(cat ${PID})
