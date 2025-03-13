@@ -1,8 +1,9 @@
 {
 	"Pages":{
 		"Login":{"F":"tab/Login"},
-		"ChartSample":{"F":"tab/ChartSample","L":"Chart Sample"},
-		"Regression":{"F":"tab/Regression","L":"Regression Sample"}
+		"Manual":{"F":"tab/Manual","L":"使用手冊"},
+		"ChartSample":{"F":"tab/ChartSample","L":"繪圖範例"},
+		"Regression":{"F":"tab/Regression","L":"回歸範例"}
 	},
-	"StartPage":"Timeline"
+	"StartPage":"Manual"
 }
