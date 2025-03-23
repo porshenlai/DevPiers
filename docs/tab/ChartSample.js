@@ -7,7 +7,7 @@ document.currentScript.value=async (root,args)=>{
 		"平時成績":0.4
 	},"TEST");
 	let d = newChart(root.querySelector('[UIE="Chart2"]'));
-	d.draw_line({
+	let dat = {
 "45715":{"O":32.748,"H":32.818,"L":32.73,"C":32.817},
 "45714":{"O":32.7783,"H":32.812,"L":32.731,"C":32.7783},
 "45713":{"O":32.6997,"H":32.803,"L":32.695,"C":32.6997},
@@ -270,5 +270,15 @@ document.currentScript.value=async (root,args)=>{
 "45351":{"O":31.6479,"H":31.702,"L":31.5713,"C":31.6479},
 "45350":{"O":31.576,"H":31.7193,"L":31.574,"C":31.576},
 "45349":{"O":31.5487,"H":31.637,"L":31.542,"C":31.5487}
-	});
+};
+	let nx=[... Object.keys(dat)];
+	let timer = setInterval(()=>{
+		let dd = {}, i, k;
+		for(i=0;i<10 && nx.length>0;i++){
+			k = nx.pop();
+			dd[k] = dat[k];
+		}
+		d.draw_line(dd);
+		if (nx.length<=0) clearInterval(timer);
+	},1000);
 };
